@@ -7,19 +7,115 @@ $(document).ready(function () {
 
     $(".search-container").append(searchFeature);
 
-    const galleryItems = `
-        <div class="card">
-            <div class="card-img-container">
-                <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
-            </div>
-            <div class="card-info-container">
-                <h3 id="name" class="card-name cap">first last</h3>
-                <p class="card-text">email</p>
-                <p class="card-text cap">city, state</p>
-            </div>
-         </div>`;
+    //let galleryItems = `
+    //    <div class="card">
+    //        <div class="card-img-container">`;
+    //let xhr = new XMLHttpRequest();
 
-    $("#gallery").append(galleryItems);
+    let arr = [new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest()];
+    let sendOpenSend = (param) => {
+        param.open('GET', 'https://randomuser.me/api/');
+        param.send();
+    }
+    console.log(arr);
+    for (let i = 0; i < arr.length; i++) {
+        console.log(arr[0]);
+        sendOpenSend(arr[i]);
+        arr[i].onreadystatechange = function () {
+
+            if (arr[i].readyState === 4) {
+
+
+                let data = JSON.parse(this.responseText);
+                let galleryItems = `<div class="card">
+                <div class = "card-img-container" >
+            <img class = "card-img" src="${data.results[0].picture.medium}" alt="profile picture">
+        </div>
+        <div class="card-info-container">
+            <h3 id="name" class="card-name cap">${data.results[0].name.title}. ${data.results[0].name.first} ${data.results[0].name.last}</h3>
+            <p class="card-text">${data.results[0].email}</p>
+            <p class="card-text cap">${data.results[0].location.city}, ${data.results[0].location.state}</p>
+        </div>
+        </div>`;
+                $("#gallery").append(galleryItems);
+                console.log(arr[i].readyState);
+                console.log(arr[i].status);
+
+                console.log(data);
+                console.log(data.results[0].name.title);
+                console.log(data.results[0].name.first);
+                console.log(data.results[0].name.last);
+                console.log(data.results[0].phone);
+                console.log(data.results[0].picture.medium);
+                console.log(data.results[0].email);
+                console.log(data.results[0].cell);
+                console.log(data.results[0].dob.age);
+                console.log(data.results[0].dob.date);
+                console.log(data.results[0].gender);
+                console.log(data.results[0].location.city);
+                console.log(data.results[0].location.country);
+                console.log(data.results[0].location.state);
+
+            }
+
+        }
+    }
+
+
+    /*
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].open('GET', 'https://randomuser.me/api/');
+        arr[i].send();
+    }
+    */
+
+    /*
+    console.log(xhr);
+    console.log(arr[0]);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+
+            let data = JSON.parse(this.responseText);
+            let galleryItems = `<div class="card">
+                        <div class = "card-img-container" >
+                    <img class = "card-img" src="${data.results[0].picture.medium}" alt="profile picture">
+                </div>
+                <div class="card-info-container">
+                    <h3 id="name" class="card-name cap">${data.results[0].name.title}. ${data.results[0].name.first} ${data.results[0].name.last}</h3>
+                    <p class="card-text">${data.results[0].email}</p>
+                    <p class="card-text cap">${data.results[0].location.city}, ${data.results[0].location.state}</p>
+                </div>
+                </div>`;
+            $("#gallery").append(galleryItems);
+            console.log(xhr.readyState);
+            console.log(xhr.status);
+
+            console.log(data);
+            console.log(data.results[0].name.title);
+            console.log(data.results[0].name.first);
+            console.log(data.results[0].name.last);
+            console.log(data.results[0].phone);
+            console.log(data.results[0].picture.medium);
+            console.log(data.results[0].email);
+            console.log(data.results[0].cell);
+            console.log(data.results[0].dob.age);
+            console.log(data.results[0].dob.date);
+            console.log(data.results[0].gender);
+            console.log(data.results[0].location.city);
+            console.log(data.results[0].location.country);
+            console.log(data.results[0].location.state);
+        }
+
+    }
+    */
+
+
+
+
+
+
+
+
 
     const modal = `
         <div class="modal-container">
@@ -45,4 +141,9 @@ $(document).ready(function () {
         </div>`;
 
     $("body").append(modal);
+    $(".modal-container").hide();
+    $("#modal-close-btn").click((e) => {
+        console.log($("#modal-close-btn"));
+        $(".modal-container").hide();
+    })
 })
