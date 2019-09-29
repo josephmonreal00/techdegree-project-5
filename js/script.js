@@ -7,86 +7,36 @@ $(document).ready(function () {
 
     $(".search-container").append(searchFeature);
 
-    //let galleryItems = `
-    //    <div class="card">
-    //        <div class="card-img-container">`;
-    //let xhr = new XMLHttpRequest();
-
-    let arr = [new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest(), new XMLHttpRequest()];
-    let sendOpenSend = (param) => {
-        param.open('GET', 'https://randomuser.me/api/');
-        param.send();
-    }
-    console.log(arr);
-    for (let i = 0; i < arr.length; i++) {
-        console.log(arr[0]);
-        sendOpenSend(arr[i]);
-        arr[i].onreadystatechange = function () {
-
-            if (arr[i].readyState === 4) {
+    let xhr = new XMLHttpRequest();
 
 
-                let data = JSON.parse(this.responseText);
-                let galleryItems = `<div class="card">
-                <div class = "card-img-container" >
-            <img class = "card-img" src="${data.results[0].picture.medium}" alt="profile picture">
-        </div>
-        <div class="card-info-container">
-            <h3 id="name" class="card-name cap">${data.results[0].name.title}. ${data.results[0].name.first} ${data.results[0].name.last}</h3>
-            <p class="card-text">${data.results[0].email}</p>
-            <p class="card-text cap">${data.results[0].location.city}, ${data.results[0].location.state}</p>
-        </div>
-        </div>`;
-                $("#gallery").append(galleryItems);
-                console.log(arr[i].readyState);
-                console.log(arr[i].status);
-
-                console.log(data);
-                console.log(data.results[0].name.title);
-                console.log(data.results[0].name.first);
-                console.log(data.results[0].name.last);
-                console.log(data.results[0].phone);
-                console.log(data.results[0].picture.medium);
-                console.log(data.results[0].email);
-                console.log(data.results[0].cell);
-                console.log(data.results[0].dob.age);
-                console.log(data.results[0].dob.date);
-                console.log(data.results[0].gender);
-                console.log(data.results[0].location.city);
-                console.log(data.results[0].location.country);
-                console.log(data.results[0].location.state);
-
-            }
-
-        }
-    }
-
-
-    /*
-    for (let i = 0; i < arr.length; i++) {
-        arr[i].open('GET', 'https://randomuser.me/api/');
-        arr[i].send();
-    }
-    */
-
-    /*
-    console.log(xhr);
-    console.log(arr[0]);
+    //console.log(xhr);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
 
             let data = JSON.parse(this.responseText);
-            let galleryItems = `<div class="card">
+            console.log("The data", data);
+            let arr = data.results;
+            console.log(data.results.length);
+
+            for (let i = 0; i < data.results.length; i++) {
+                $("#gallery").append(
+                    `<div class="card">
                         <div class = "card-img-container" >
-                    <img class = "card-img" src="${data.results[0].picture.medium}" alt="profile picture">
-                </div>
-                <div class="card-info-container">
-                    <h3 id="name" class="card-name cap">${data.results[0].name.title}. ${data.results[0].name.first} ${data.results[0].name.last}</h3>
-                    <p class="card-text">${data.results[0].email}</p>
-                    <p class="card-text cap">${data.results[0].location.city}, ${data.results[0].location.state}</p>
-                </div>
-                </div>`;
-            $("#gallery").append(galleryItems);
+                            <img class = "card-img" src="${data.results[i].picture.medium}" alt="profile picture">
+                        </div>
+                        <div class="card-info-container">
+                            <h3 id="name" class="card-name cap">${data.results[i].name.title}. ${data.results[i].name.first} ${data.results[i].name.last}</h3>
+                            <p class="card-text">${data.results[i].email}</p>
+                            <p class="card-text cap">${data.results[i].location.city}, ${data.results[i].location.state}</p>
+                        </div>
+                    </div>`);
+
+            }
+
+
+
+
             console.log(xhr.readyState);
             console.log(xhr.status);
 
@@ -107,7 +57,8 @@ $(document).ready(function () {
         }
 
     }
-    */
+    xhr.open("GET", "https://randomuser.me/api/?results=12");
+    xhr.send();
 
 
 
