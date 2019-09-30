@@ -46,37 +46,81 @@ $(document).ready(function () {
                         if (fullName == $(e)[0]["target"]["parentElement"]["nextElementSibling"]["firstElementChild"]["textContent"]) {
                             createModal(arr[i]);
                         }
-
                     }
                 }
                 if ($(e)[0]["target"]["parentElement"]["className"] == "card-info-container") {
                     console.log("card-info-container")
                     console.log($(e)[0]["target"]["parentElement"]["firstElementChild"]["textContent"]);
+
+                    for (let i = 0; i < arr.length; i++) {
+                        let title = arr[i].name.title;
+                        let first = arr[i].name.first;
+                        let last = arr[i].name.last;
+                        let fullName = first + " " + last;
+                        if (fullName == $(e)[0]["target"]["parentElement"]["firstElementChild"]["textContent"]) {
+                            createModal(arr[i]);
+                        }
+                    }
                 }
 
                 if ($(e)[0]["target"]["parentElement"]["className"] == "gallery") {
                     console.log("gallery");
                     console.log($(e)[0]["target"]["lastElementChild"]["firstElementChild"]["textContent"]);
+
+                    for (let i = 0; i < arr.length; i++) {
+                        let title = arr[i].name.title;
+                        let first = arr[i].name.first;
+                        let last = arr[i].name.last;
+                        let fullName = first + " " + last;
+                        if (fullName == $(e)[0]["target"]["lastElementChild"]["firstElementChild"]["textContent"]) {
+                            createModal(arr[i]);
+                        }
+                    }
                 }
 
                 if ($(e)[0]["target"]["className"] == "card") {
                     console.log("card");
                     console.log($(e)[0]["target"]["lastElementChild"]["firstElementChild"]["textContent"]);
 
+                    for (let i = 0; i < arr.length; i++) {
+                        let title = arr[i].name.title;
+                        let first = arr[i].name.first;
+                        let last = arr[i].name.last;
+                        let fullName = first + " " + last;
+                        if (fullName == $(e)[0]["target"]["lastElementChild"]["firstElementChild"]["textContent"]) {
+                            createModal(arr[i]);
+                        }
+                    }
+
                 }
                 if ($(e)[0]["target"]["className"] == "card-img-container") {
                     console.log($(e)[0]["target"]["nextElementSibling"]["firstElementChild"]["textContent"]);
+
+                    for (let i = 0; i < arr.length; i++) {
+                        let title = arr[i].name.title;
+                        let first = arr[i].name.first;
+                        let last = arr[i].name.last;
+                        let fullName = first + " " + last;
+                        if (fullName == $(e)[0]["target"]["nextElementSibling"]["firstElementChild"]["textContent"]) {
+                            createModal(arr[i]);
+                        }
+                    }
                 }
 
                 if ($(e)[0]["target"]["className"] == "card-info-container") {
                     console.log($(e)[0]["target"]["firstChild"]["parentElement"]["firstElementChild"]["textContent"])
                     //console.log($(e)[0]["target"]["nextElementSibling"]);
+
+                    for (let i = 0; i < arr.length; i++) {
+                        let title = arr[i].name.title;
+                        let first = arr[i].name.first;
+                        let last = arr[i].name.last;
+                        let fullName = first + " " + last;
+                        if (fullName == $(e)[0]["target"]["firstChild"]["parentElement"]["firstElementChild"]["textContent"]) {
+                            createModal(arr[i]);
+                        }
+                    }
                 }
-                /*
-                
-                */
-
-
             })
         }
 
@@ -85,9 +129,9 @@ $(document).ready(function () {
     xhr.send();
 
     let createModal = (person) => {
-        console.log(person);
+        console.log("person", person);
         let name = `${person.name.first} ${person.name.last}`;
-        $("body").append(`<div class="modal-container">
+        $(`<div class="modal-container">
             <div class="modal">
                 <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                 <div class="modal-info-container">
@@ -107,13 +151,20 @@ $(document).ready(function () {
                 <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
                 <button type="button" id="modal-next" class="modal-next btn">Next</button>
             </div>
-        </div>`);
+        </div>`).insertAfter("#gallery");
 
         $("#modal-close-btn").click((e) => {
-            console.log($("#modal-close-btn"));
-            $(".modal-container").hide();
+            $(".modal-container")[0]["hidden"] = true;
+            removeDiv();
         })
     }
+
+    let removeDiv = () => {
+        let modals = $(".modal-container");
+        modals.remove();
+    }
+
+
 
 
 })
