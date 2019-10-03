@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    /*
+        Storing the HTML markup and then appending to index.html
+    */
     const searchFeature = `
         <form action="#" method="get">
             <input type="search" id="search-input" class="search-input" placeholder="Search...">
@@ -6,14 +10,21 @@ $(document).ready(function () {
         </form>`;
 
 
+    // Creating an XMLHttpRequest object in order to retrieve information from API
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status == 200) {
+            /*
+                Parsing the JSON string into an object
+            */
             let data = JSON.parse(this.responseText);
-            //console.log("The data", data);
+
             let arr = data.results;
 
+            /*
+                Creating a card for every user.
+            */
             for (let i = 0; i < data.results.length; i++) {
                 $("#gallery").append(
                     `<div class="card">
@@ -27,6 +38,10 @@ $(document).ready(function () {
                         </div>
                     </div>`);
             }
+
+            /*
+            Everytime a card is clicked the name is checked to an element exisiting within the arr array and when it finds a match it captures and passes that card into the createModal() method
+             */
 
             $(".card").click((e) => {
 
@@ -105,7 +120,6 @@ $(document).ready(function () {
 
                 if ($(e)[0]["target"]["className"] == "card-info-container") {
                     console.log($(e)[0]["target"]["firstChild"]["parentElement"]["firstElementChild"]["textContent"])
-                    //console.log($(e)[0]["target"]["nextElementSibling"]);
 
                     for (let i = 0; i < arr.length; i++) {
                         let title = arr[i].name.title;
@@ -119,62 +133,70 @@ $(document).ready(function () {
                 }
             })
         }
-
     }
+
+    // Requesting for the information from the API
+
     xhr.open("GET", "https://randomuser.me/api/?results=12");
+
+    // Sending the API a single request
+
     xhr.send();
 
     $(".search-container").append(searchFeature);
 
+    // Global array that will store that names from all cards
+
     let theVals = [];
-    let theNameName = "";
+
+    // Will capture the name within the search field
+
+    let theCurrentNameSearched = "";
+
+    // change event listener that keeps track of the text within the search field
+
     $("#search-input").change((e) => {
+        // retrieving all the elements with a class of .card-name
         let nombres = $(".card-name");
+
+        // array that stores only the names from the card elements in nombres array
         let namesInText = [];
+
+        // for loop is pushing only the text for the names into the namesInText array
         for (let i = 0; i < nombres.length; i++) {
             namesInText.push(nombres[i]["textContent"]);
         }
-        //console.log("The names", namesInText);
-        //console.log($(e)[0]["target"]["value"]);
-        //console.log($(e)[0]["target"]["value"]["length"]);
 
+        // if theVals [] is empty then add the names into the array else names must be added already
         if (theVals.length < 1) {
             theVals.push(namesInText);
         }
-        theNameName = $(e)[0]["target"]["value"];
 
+        // keeps track of the text in the search field as the user changes 
+        theCurrentNameSearched = $(e)[0]["target"]["value"];
     })
-    console.log(theVals, "the valss");
 
     let theDomEles = [];
+
     $(".search-submit").click(() => {
         if (theDomEles.length < 1) {
             theDomEles = $(".card-name");
         }
-        //console.log("theElementstwe", theDomEles);
-        //for (let i = 0; i < theVals[0].length; i++) {
-        //console.log(theVals[0][i]);
-        //    if (theNameName == theVals[0][i].substring(0, theNameName.length)) {
-        //       console.log(theVals[0][i]);
-        //    }
-        //}
 
         for (let i = 0; i < theDomEles.length; i++) {
             //console.log($(theDomEles[i]));
-            if ($(theDomEles[i])[0]["textContent"].substring(0, theNameName.length) == theNameName) {
-                $(theDomEles[i])[0]["parentElement"]["parentElement"]["style"]["visibility"] = "";
-                console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]);
-                console.log("not hidden");
+            if ($(theDomEles[i])[0]["textContent"].substring(0, theCurrentNameSearched.length) == theCurrentNameSearched) {
+                $(theDomEles[i])[0]["parentElement"]["parentElement"]["style"]["visibility"] = "visible";
+                //console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]);
+                //console.log("not hidden");
             } else {
-                console.log("should be hidden");
-                console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]["hidden"]);
+                //console.log("should be hidden");
+                //console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]["hidden"]);
+                //console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]);
                 $(theDomEles[i])[0]["parentElement"]["parentElement"]["style"]["visibility"] = "hidden";
-                console.log($(theDomEles[i])[0]["parentElement"]["parentElement"]);
+
             }
         }
-        console.log("The Search");
-        console.log(theVals);
-        console.log(theNameName);
     })
 
     let createModal = (person) => {
@@ -191,7 +213,7 @@ $(document).ready(function () {
                     <hr>
                     <p class="modal-text">${person.cell}</p>
                     <p class="modal-text">${person.location.street.number} ${person.location.street.name}., ${person.location.city}, ${person.nat} ${person.location.postcode}</p>
-                    <p class="modal-text">Birthday: ${person.dob.date}</p>
+                    <p class="modal-text">Birthday: ${person.dob.date.substring(5,7)}/${person.dob.date.substring(8,10)}/${person.dob.date.substring(0,4)}</p>
                 </div>
             </div>
 
@@ -212,8 +234,5 @@ $(document).ready(function () {
         let modals = $(".modal-container");
         modals.remove();
     }
-
-
-
 
 })
